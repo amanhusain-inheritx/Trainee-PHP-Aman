@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Form</title>
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+        body { font-family: Arial; width: 400px; margin: 50px auto; }
+        input, textarea { width: 100%; margin: 10px 0; padding: 8px; }
+        button { padding: 10px; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+
+<h2>Contact Form</h2>
+
+<form id="contactForm">
+    <input type="text" id="name" placeholder="Name">
+    <input type="email" id="email" placeholder="Email">
+    <textarea id="message" placeholder="Message"></textarea>
+    <button type="submit">Send</button>
+</form>
+
+<p id="response"></p>
+
+<script>
+$(document).ready(function(){
+
+    $("#contactForm").submit(function(e){
+        e.preventDefault(); // stop page reload
+
+        let name = $("#name").val().trim();
+        let email = $("#email").val().trim();
+        let message = $("#message").val().trim();
+
+        // Validation
+        if(name === "" || email === "" || message === ""){
+            $("#response").html("All fields are required").addClass("error");
+            return;
+        }
+
+        // Email validation
+        let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+        if(!email.match(emailPattern)){
+            $("#response").html("Invalid email").addClass("error");
+            return;
+        }
+
+        // AJAX request
+        $.ajax({
+            url: "process.php",
+            method: "POST",
+            data: {
+                name: name,
+                email: email,
+                message: message
+            },
+            success: function(response){
+                $("#response").html(response).removeClass("error").addClass("success");
+                $("#contactForm")[0].reset(); // clear form
+            }
+        });
+
+    });
+
+});
+</script>
+
+</body>
+</html>

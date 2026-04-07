@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery To-Do App</title>
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+        body { font-family: Arial; width: 400px; margin: 50px auto; }
+        input { width: 70%; padding: 8px; }
+        button { padding: 8px; }
+        li { margin: 10px 0; cursor: pointer; }
+        .done { text-decoration: line-through; color: gray; }
+    </style>
+</head>
+<body>
+
+<h2>To-Do List</h2>
+
+<input type="text" id="taskInput" placeholder="Enter task">
+<button id="addBtn">Add</button>
+
+<ul id="taskList"></ul>
+
+<script>
+$(document).ready(function(){
+
+    // Add Task
+    $("#addBtn").click(function(){
+        let task = $("#taskInput").val().trim();
+
+        if(task === ""){
+            alert("Enter a task!");
+            return;
+        }
+
+        let li = $("<li></li>").text(task);
+
+        // Delete button
+        let delBtn = $("<button> delete </button>").css("margin-left", "10px");
+
+        delBtn.click(function(){
+            li.remove();
+        });
+
+        // Mark as completed
+        li.click(function(){
+            $(this).toggleClass("done");
+        });
+
+        li.append(delBtn);
+        $("#taskList").append(li);
+
+        $("#taskInput").val(""); // clear input
+    });
+
+});
+</script>
+
+</body>
+</html>
